@@ -60,12 +60,12 @@ class Museum {
   });
 
   factory Museum.fromJson(Map<String, dynamic> json) {
-    final unescape = HtmlUnescape();
+    //final unescape = HtmlUnescape();
     return Museum(
       id: json['ID'] ?? '',
-      name: unescape.convert(json['Name'] ?? ''),
-      location: unescape.convert(json['Location'] ?? ''),
-      description: unescape.convert(json['Description'] ?? ''),
+      name: json['Name'] ?? '',
+      location: json['Location'] ?? '',
+      description: json['Description'] ?? '',
       image: json['Image'] ?? '',
     );
   }
@@ -78,43 +78,148 @@ class MuseumCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(museum.image),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(museum.name,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(museum.location, style: const TextStyle(fontSize: 16)),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(museum.description),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Logando o ID do museu antes de navegar
-                print('Navigating to SalasScreen with museumId: ${museum.id}');
-                // Navegar para a tela de Salas e passar o ID do museu
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SalasScreen(museumId: museum.id),
+    // Função para tratar entidades HTML e valores nulos
+    String decodeHtmlEntities(String? html) {
+      if (html == null) return '';
+      // Decodifica caracteres especiais HTML
+      return html
+          .replaceAll('&lt;', '<')
+          .replaceAll('&gt;', '>')
+          .replaceAll('&amp;', '&')
+          .replaceAll('&quot;', '"')
+          .replaceAll('&apos;', "'");
+    }
+
+    // Decodifica caracteres especiais no texto e fornece valores padrão para valores nulos
+    final decodedName =
+        decodeHtmlEntities(museum.name) ?? 'Nome não disponível';
+    final decodedLocation =
+        decodeHtmlEntities(museum.location) ?? 'Localização não disponível';
+    final decodedDescription =
+        decodeHtmlEntities(museum.description) ?? 'Descrição não disponível';
+
+    // Adiciona logs para depuração
+    print('API Response:');
+    print('Name: ${museum.name}');
+    print('Location: ${museum.location}');
+    print('Description: ${museum.description}');
+    print('Decoded Name: $decodedName');
+    print('Decoded Location: $decodedLocation');
+    print('Decoded Description: $decodedDescription');
+
+    return GestureDetector(
+      onTap: () {
+        // Logando o ID do museu antes de navegar
+        print('Navigating to SalasScreen with museumId: ${museum.id}');
+        // Navegar para a tela de Salas e passar o ID do museu
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SalasScreen(
+                museumId: museum.id,
+                museumName: museum.name, // Passando o nome do museu
+                museumDescription:
+                    museum.description, // Passando a descrição do museu
+                museumImageUrl:
+                    museum.image, // Passando a URL da imagem do museu),
+              ),
+            ));
+      },
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
+        child: SizedBox(
+          height: 300, // Defina uma altura fixa para teste
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                      16.0), // Arredonda os cantos da imagem
+                  child: Image.network(
+                    museum.image ?? 'https://via.placeholder.com/150',
+                    fit: BoxFit.cover,
                   ),
-                );
-              },
-              child: const Text('Ver Salas'),
-            ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    // Adiciona um gradiente ao fundo do Container
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(0.1),
+                        Colors.black.withOpacity(0.7)
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16.0),
+                      bottomRight: Radius.circular(16.0),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        decodedName,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        decodedDescription,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(color: Colors.white, width: 1.0),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                              size: 16.0,
+                            ),
+                            const SizedBox(width: 4.0),
+                            Text(
+                              decodedLocation,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

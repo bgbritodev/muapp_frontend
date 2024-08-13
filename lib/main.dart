@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/museums_screen.dart'; // Importando a tela MuseumsScreen
+import 'screens/home_page.dart'; // Importa a nova tela
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MuApp',
+      title: 'Seu App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:
-          const MuseumsScreen(), // Definindo MuseumsScreen como a tela inicial
+      home: const HomePage(), // Define HomePage como a tela inicial
     );
   }
 }
