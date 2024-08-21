@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/home_page.dart'; // Importa a nova tela
+//import 'screens/home_page.dart'; // Importa a tela HomePage
+import 'screens/login_screen.dart'; // Importa a tela de LoginScreen
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(), // Define HomePage como a tela inicial
+      home: LoginScreen(), // Define LoginScreen como a tela inicial
     );
   }
 }

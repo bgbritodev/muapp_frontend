@@ -6,7 +6,7 @@ import 'package:html_unescape/html_unescape.dart';
 import 'package:muapp_frontend/screens/salas_screen.dart';
 
 class MuseumsScreen extends StatelessWidget {
-  final String apiUrl = "http://10.0.2.2:8080/allmuseus";
+  final String apiUrl = "http://10.0.2.2:8080/museus/all";
 
   const MuseumsScreen({Key? key}) : super(key: key);
 

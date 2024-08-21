@@ -39,6 +39,7 @@ dependencies:
   html: ^0.15.4
   html_unescape: ^2.0.0
   just_audio: ^0.9.37
+  animated_icon: ^0.0.9
 
 dev_dependencies:
   flutter_test:

@@ -149,7 +149,10 @@ class SalaCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ObrasScreen(salaId: sala.id),
+            builder: (context) => ObrasScreen(
+                salaId: sala.id,
+                salaTitulo: sala.name,
+                salaDescricao: sala.description),
           ),
         );
       },
