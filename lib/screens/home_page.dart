@@ -17,26 +17,36 @@ class HomePage extends StatelessWidget {
             ),
           ),
           // Texto sobre a imagem
+          // Texto sobre a imagem
           Positioned(
-            top: 100,
+            top: 180, // Ajustado para aumentar a distância do topo
             left: 20,
             right: 20,
-            child: Center(
-              child: Text(
-                'Descubra sua próxima viagem cultural',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 10.0,
-                      color: Colors.black.withOpacity(0.7),
-                      offset: const Offset(0, 0),
-                    ),
-                  ],
+            child: Align(
+              alignment:
+                  Alignment.topLeft, // Alinha o bloco de texto à esquerda
+              child: Container(
+                alignment: Alignment
+                    .topLeft, // Alinha o texto dentro do Container à direita
+                child: Text(
+                  'Descubra sua\npróxima viagem\ncultural',
+
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 10.0,
+                        color: Colors.black.withOpacity(0.9),
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign
+                      .left, // Alinha o texto à direita dentro do widget
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
           ),

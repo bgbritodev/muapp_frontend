@@ -34,9 +34,6 @@ class SalasScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Salas'),
-      ),
       body: Stack(
         children: [
           // Imagem de fundo do museu
@@ -49,10 +46,23 @@ class SalasScreen extends StatelessWidget {
               ),
             ),
           ),
+          // Botão de voltar
+          Positioned(
+            top: 40.0, // Ajuste de acordo com o design desejado
+            left: 16.0,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
           // Retângulo branco com título, descrição e cards
           Padding(
             padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
             child: Container(
+              margin: const EdgeInsets.only(
+                  top: 60.0), // Adiciona margem para o botão de voltar
               decoration: BoxDecoration(
                 color:
                     Colors.white.withOpacity(0.9), // Cor branca com opacidade
@@ -123,14 +133,20 @@ class Sala {
   final String id;
   final String name;
   final String description;
+  final String image;
 
-  Sala({required this.id, required this.name, required this.description});
+  Sala(
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.image});
 
   factory Sala.fromJson(Map<String, dynamic> json) {
     return Sala(
       id: json['ID'] ?? '',
       name: json['Name'] ?? 'No name available',
       description: json['Description'] ?? 'No description available',
+      image: json['Image'] ?? 'No description available',
     );
   }
 }
@@ -156,32 +172,45 @@ class SalaCard extends StatelessWidget {
           ),
         );
       },
-      child: Card(
+      child: Container(
         margin: const EdgeInsets.all(8.0),
-        color: const Color.fromARGB(255, 0, 83, 151), // Fundo azul
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: Text(
-                sala.name.isNotEmpty ? sala.name : 'No name available',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Texto branco
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0), // Arredonda os cantos
+          image: DecorationImage(
+            image: NetworkImage(sala.image), // Usa a URL da imagem da sala
+            fit: BoxFit.cover, // Cobre todo o card com a imagem
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(
+                0.5), // Fundo escuro semi-transparente para contraste
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                title: Text(
+                  sala.name.isNotEmpty ? sala.name : 'No name available',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // Texto branco
+                  ),
+                ),
+                subtitle: Text(
+                  sala.description.isNotEmpty
+                      ? sala.description
+                      : 'No description available',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.white, // Texto branco
+                  ),
                 ),
               ),
-              subtitle: Text(
-                sala.description.isNotEmpty
-                    ? sala.description
-                    : 'No description available',
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white, // Texto branco
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
